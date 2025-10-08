@@ -59,6 +59,7 @@ private slots:
 	void rcsStartRecording();
 	void rcsStopRecording();
 	void rcsportValueChangedInt(int value);
+	void toggleConsole(bool checked);
 
 private:
 	QString replaceFilename(QString fullfile) const;

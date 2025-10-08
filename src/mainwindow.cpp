@@ -20,6 +20,7 @@ using QRegExp = QRegularExpression;
 // recording class
 #include "recording.h"
 #include "tcpinterface.h"
+#include "win_console.h"
 
 const QStringList bids_modalities_default = QStringList({"eeg", "ieeg", "meg", "beh"});
 
@@ -35,6 +36,17 @@ MainWindow::MainWindow(QWidget *parent, const char *config_file)
 			this, "Save Configuration File", "", "Configuration Files (*.cfg)"));
 	});
 	connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
+
+#ifdef _WIN32
+	// Hide console at GUI startup (if present). CLI build remains unaffected.
+	hideConsoleWindow();
+	// Hook menu action to toggle console visibility
+	connect(ui->actionShow_Console, &QAction::toggled, this, &MainWindow::toggleConsole);
+	ui->actionShow_Console->setChecked(isConsoleWindowVisible());
+#else
+	// Non-Windows: hide or disable the action
+	if (ui->actionShow_Console) ui->actionShow_Console->setVisible(false);
+#endif
 
 	// Signals for stream finding/selecting/starting/stopping
 	connect(ui->refreshButton, &QPushButton::clicked, this, &MainWindow::refreshStreams);
@@ -92,6 +104,22 @@ MainWindow::MainWindow(QWidget *parent, const char *config_file)
 
 	QString cfgfilepath = find_config_file(config_file);
 	load_config(cfgfilepath);
+
+#ifdef _WIN32
+	// Restore console visibility preference if present
+	try {
+		QSettings pt(QDir::cleanPath(cfgfilepath), QSettings::Format::IniFormat);
+		if (pt.contains("ConsoleVisible")) {
+			bool vis = pt.value("ConsoleVisible").toBool();
+			ui->actionShow_Console->blockSignals(true);
+			ui->actionShow_Console->setChecked(vis);
+			ui->actionShow_Console->blockSignals(false);
+			toggleConsole(vis);
+		}
+	} catch (...) {
+		// ignore
+	}
+#endif
 }
 
 void MainWindow::statusUpdate() const {
@@ -273,6 +301,10 @@ void MainWindow::save_config(QString filename) {
 	settings.setValue("StudyRoot", QDir::cleanPath(ui->rootEdit->text()));
 	if (!ui->check_bids->isChecked())
 		settings.setValue("PathTemplate", QDir::cleanPath(ui->lineEdit_template->text()));
+	// Optional persistence of console visibility
+#ifdef _WIN32
+	settings.setValue("ConsoleVisible", ui->actionShow_Console && ui->actionShow_Console->isChecked());
+#endif
 	// Build QStringList from missingStreams and knownStreams that are missing.
 	QStringList requiredStreams = missingStreams.values();
 	for (auto &k : knownStreams) {
@@ -626,6 +658,18 @@ void MainWindow::printReplacedFilename() {
 }
 
 MainWindow::~MainWindow() noexcept = default;
+
+void MainWindow::toggleConsole(bool checked) {
+#ifdef _WIN32
+	if (checked) {
+		showConsoleWindow();
+	} else {
+		hideConsoleWindow();
+	}
+#else
+	Q_UNUSED(checked);
+#endif
+}
 
 void MainWindow::rcsCheckBoxChanged(bool checked) { enableRcs(checked); }
 
