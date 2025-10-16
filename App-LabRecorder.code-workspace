@@ -7,27 +7,26 @@
 	"settings": {
 
 		"workbench.colorCustomizations": {
-            "editor.lineHighlightBackground": "#ffd1e6a0", // light pink, semi-transparent
-            "editor.lineHighlightBorder": "#ffb6c1a0", // light pink border
-            "activityBar.background": "#ffe0ef", // very light pink
-            "titleBar.activeBackground": "#ffb6c1", // light pink
-            "titleBar.activeForeground": "#2d2d2d", // dark for contrast
-            "scrollbarSlider.background": "#ffb6c150", // light pink, semi-transparent
-            "scrollbarSlider.hoverBackground": "#ffb6c180", // slightly more opaque
-            "scrollbarSlider.activeBackground": "#ff69b4df", // hot pink, more visible
-            "activityBar.inactiveForeground": "#2d2d2d3c", // dark, semi-transparent
-            "activityBar.foreground": "#2d2d2d", // dark for contrast
-            "notebook.outputContainerBackgroundColor": "#ffd1e650", // light pink, semi-transparent
-            "notebook.outputContainerBorderColor": "#ff69b4", // hot pink border
-            "notebook.focusedCellBorder": "#ff69b4da", // hot pink, semi-transparent
-            "notebook.focusedEditorBorder": "#ff69b4", // hot pink
-            "notebook.inactiveFocusedCellBorder": "#ffb6c163", // light pink, more transparent
-            "titleBar.inactiveBackground": "#ffb6c18e", // faded light pink
-            "tab.activeBorder": "#c71585", // medium violet red for contrast
-            "statusBar.background": "#c71585", // medium violet red
-            "statusBar.foreground": "#ffffff", // white for contrast
-            "sideBarSectionHeader.border": "#ffb6c1" // light pink border
-
+                  "editor.lineHighlightBackground": "#ffd1e6a0", // light pink, semi-transparent
+                  "editor.lineHighlightBorder": "#ffb6c1a0", // light pink border
+                  "activityBar.background": "#ffe0ef", // very light pink
+                  "titleBar.activeBackground": "#ffb6c1", // light pink
+                  "titleBar.activeForeground": "#2d2d2d", // dark for contrast
+                  "scrollbarSlider.background": "#ffb6c150", // light pink, semi-transparent
+                  "scrollbarSlider.hoverBackground": "#ffb6c180", // slightly more opaque
+                  "scrollbarSlider.activeBackground": "#ff69b4df", // hot pink, more visible
+                  "activityBar.inactiveForeground": "#2d2d2d3c", // dark, semi-transparent
+                  "activityBar.foreground": "#2d2d2d", // dark for contrast
+                  "notebook.outputContainerBackgroundColor": "#ffd1e650", // light pink, semi-transparent
+                  "notebook.outputContainerBorderColor": "#ff69b4", // hot pink border
+                  "notebook.focusedCellBorder": "#ff69b4da", // hot pink, semi-transparent
+                  "notebook.focusedEditorBorder": "#ff69b4", // hot pink
+                  "notebook.inactiveFocusedCellBorder": "#ffb6c163", // light pink, more transparent
+                  "titleBar.inactiveBackground": "#ffb6c18e", // faded light pink
+                  "tab.activeBorder": "#c71585", // medium violet red for contrast
+                  "statusBar.background": "#c71585", // medium violet red
+                  "statusBar.foreground": "#ffffff", // white for contrast
+                  "sideBarSectionHeader.border": "#ffb6c1" // light pink border
 		}
 	}
 }
