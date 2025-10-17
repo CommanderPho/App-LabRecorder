@@ -611,21 +611,22 @@ QString MainWindow::replaceFilename(QString fullfile) const {
 
 	// Hostname replacement (filename-safe)
 	QString hostname = QHostInfo::localHostName();
-	if (hostname.isEmpty()) hostname = QStringLiteral("unknown-host");
+	if (hostname.isEmpty()) hostname = QStringLiteral("UNKNOWN-HOST");
 	QString safeHostname = hostname;
-#if QT_VERSION_MAJOR < 6
-	// Replace whitespace with underscore
-	safeHostname.replace(QRegExp("\\s+"), "_");
-	// Replace characters not safe in filenames on major platforms
-	safeHostname.replace(QRegExp("[<>:\\"/\\\\\\|\\?\\*]"), "_");
-#else
-	// Replace whitespace with underscore
-	safeHostname.replace(QRegularExpression("\\s+"), "_");
-	// Replace characters not safe in filenames on major platforms
-	safeHostname.replace(QRegularExpression("[<>:\\"/\\\\\\|\\?\\*]"), "_");
-#endif
-	fullfile.replace("%hostname", safeHostname);
 
+	#if QT_VERSION_MAJOR < 6
+		// Replace whitespace with underscore
+		safeHostname.replace(QRegExp("\\s+"), "_");
+		// Replace characters not safe in filenames on major platforms
+		safeHostname.replace(QRegExp("[<>:\\\"/\\\\|\\?\\*]"), "_");
+	#else
+		// Replace whitespace with underscore
+		safeHostname.replace(QRegularExpression("\\s+"), "_");
+		// Replace characters not safe in filenames on major platforms
+		safeHostname.replace(QRegularExpression("[<>:\\\"/\\\\|\\?\\*]"), "_");
+	#endif
+
+	fullfile.replace("%hostname", safeHostname);
 	return fullfile.trimmed();
 
 }
