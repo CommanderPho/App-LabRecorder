@@ -98,6 +98,9 @@ MainWindow::MainWindow(QWidget *parent, const char *config_file)
 			ui->label_counter->setText("Exp num (%n)");
 		}
 	});
+	// printReplacedFilename
+	connect(ui->actionRefreshFilepath, &QAction::triggered, this, &MainWindow::printReplacedFilename);
+	connect(ui->btnRefreshPath, &QPushButton::clicked, this, &MainWindow::printReplacedFilename);
 
 	timer = std::make_unique<QTimer>(this);
 	connect(&*timer, &QTimer::timeout, this, &MainWindow::statusUpdate);

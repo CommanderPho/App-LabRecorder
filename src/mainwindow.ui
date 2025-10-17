@@ -137,6 +137,17 @@
        <item>
         <widget class="QLabel" name="locationLabel"/>
        </item>
+       <item>
+        <widget class="QToolButton" name="btnRefreshPath">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset theme="view-refresh">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>
@@ -315,6 +326,7 @@
      <string>&amp;View</string>
     </property>
     <addaction name="actionShow_Console"/>
+    <addaction name="actionRefreshFilepath"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -367,6 +379,11 @@
     <string>F12</string>
    </property>
   </action>
+  <action name="actionRefreshFilepath">
+   <property name="text">
+    <string>Refresh Filepath</string>
+   </property>
+  </action>
  </widget>
  <tabstops>
   <tabstop>startButton</tabstop>
@@ -388,5 +405,22 @@
   <tabstop>scrollArea</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>btnRefreshPath</sender>
+   <signal>triggered(QAction*)</signal>
+   <receiver>actionRefreshFilepath</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>603</x>
+     <y>76</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
