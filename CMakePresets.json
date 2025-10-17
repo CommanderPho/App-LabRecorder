@@ -1,0 +1,20 @@
+{
+    "version": 8,
+    "configurePresets": [
+        {
+            "name": "phoTest",
+            "displayName": "Custom configure preset",
+            "description": "Sets Ninja generator, build and install directory",
+            "generator": "Visual Studio 17 2022",
+            "architecture": { "value": "x64" },
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "cacheVariables": {
+                "LSL_INSTALL_ROOT": "C:/Users/pho/repos/EmotivEpoc/LSL_REPOS/LSL/liblsl/out/install/x64-Debug",
+                "QT_DIR": "L:/Qt/5.15.2/msvc2019_64/lib/cmake/Qt5",
+                "Qt5_DIR": "L:/Qt/5.15.2/msvc2019_64/lib/cmake/Qt5",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+            }
+        }
+    ]
+}

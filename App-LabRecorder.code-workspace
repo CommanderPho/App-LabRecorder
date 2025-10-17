@@ -10,8 +10,8 @@
 	"settings": {
 
 		"workbench.colorCustomizations": {
-                  "editor.lineHighlightBackground": "#ffd1e6a0", // light pink, semi-transparent
-                  "editor.lineHighlightBorder": "#ffb6c1a0", // light pink border
+                  "editor.lineHighlightBackground": "#ffd1e650", // light pink, semi-transparent
+                  "editor.lineHighlightBorder": "#ffb6c167", // light pink border
                   "activityBar.background": "#ffe0ef", // very light pink
                   "titleBar.activeBackground": "#ffb6c1", // light pink
                   "titleBar.activeForeground": "#2d2d2d", // dark for contrast

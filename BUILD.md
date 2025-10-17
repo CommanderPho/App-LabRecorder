@@ -41,10 +41,11 @@ cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DLSL_INSTALL_ROOT="C:/Use
 
 ## for install
 cmake --build build -j --config Release --target install
-
+cmake --build build -j --config Debug --target install
 
 ## for development
 cmake --build build -j --config Release
+cmake --build build -j --config Debug
 
 
 ## Unused:
