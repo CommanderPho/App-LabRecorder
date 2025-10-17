@@ -15,6 +15,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED On)
 
 option(BUILD_GUI "Build the GUI, set to off for CLI only build" ON)
 option(LABRECORDER_SINGLE_FILE_EXE "Enable Windows single-file EXE packaging (optional)" OFF)
+set(SEVENZIP_DIR "" CACHE PATH "Path to 7-Zip installation directory containing 7z.exe and 7z.sfx")
 
 set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "NO")
 set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "")
@@ -201,6 +202,7 @@ if (WIN32)
 					-AppExe "$<TARGET_FILE:${PROJECT_NAME}>"
 					-OutDir "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
 					-OutputExe "$<TARGET_FILE_DIR:${PROJECT_NAME}>/LabRecorder-single.exe"
+					-SevenZipDir "${SEVENZIP_DIR}"
 				WORKING_DIRECTORY $<TARGET_FILE_DIR:${PROJECT_NAME}>
 			)
 		endif()

@@ -36,8 +36,9 @@ cmake --build build -j --config Release --target install
 cmake --preset win-vs-release
 cmake --build --preset win-release --target INSTALL
 
-# Windows (Optional) - Single-file EXE for GUI
-# Requires 7-Zip installed (7z.exe and 7z.sfx in PATH)
+# Windows (Optional) - Single-file EXE for GUI 
+# Requires 7-Zip installed (7z.exe and 7z.sfx in PATH) - e.g. "C:\Users\pho\scoop\apps\7zip\current"
+# You can also set SEVENZIP_DIR to the 7-Zip folder if not on PATH
 cmake --preset win-vs-release-single
 cmake --build --preset win-release-single --target package-single-file-exe
 # Result: out/build/win-vs-release-single/ (or target dir) contains LabRecorder-single.exe
