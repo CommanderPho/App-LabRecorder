@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=LabRecorder
+Comment=Record and write LabStreamingLayer streams to an XDF file
+Exec=LabRecorder
+Icon=labrecorder
+Terminal=false
+Categories=Science;Education;Utility;
+
