@@ -24,6 +24,22 @@ list(APPEND CMAKE_MODULE_PATH "C:/Users/pho/repos/EmotivEpoc/LSL_REPOS/LSL/libls
 
 set_source_files_properties("./res/app.icns" PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 
+# Platform-specific icon resources
+if(WIN32)
+    set(app_icon_resource_windows "res/app.rc")
+endif()
+
+if(APPLE)
+    set(MACOSX_BUNDLE_ICON_FILE app.icns)
+    set_source_files_properties(res/app.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+    set(MACOSX_BUNDLE_GUI_IDENTIFIER "org.labstreaminglayer.LabRecorder")
+    set(MACOSX_BUNDLE_BUNDLE_NAME "LabRecorder")
+    set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}")
+    set(MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}")
+    set(MACOSX_BUNDLE_LONG_VERSION_STRING "${PROJECT_VERSION}")
+    set(MACOSX_BUNDLE_COPYRIGHT "Lab Streaming Layer")
+endif()
+
 # Include the LSLCMake.cmake file, just for testing.
 # This doesn't do much for us now that we don't use installLSLApp() anymore.
 # include("${LSL_PATH}/LSLCMake.cmake")
@@ -48,7 +64,7 @@ else()
 endif()
 
 if (BUILD_GUI)
-	## Qt
+    ## Qt
 	set(CMAKE_AUTOMOC ON)  # The later version of this in LSLCMake is somehow not enough.
 	set(CMAKE_AUTORCC ON)
 	set(CMAKE_AUTOUIC ON)
@@ -65,7 +81,11 @@ find_package(Threads REQUIRED)
 add_subdirectory(xdfwriter)
 
 if (BUILD_GUI)
-	add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${app_icon_resource_windows})
+	if(APPLE)
+		add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${app_icon_resource_windows} res/app.icns)
+	else()
+		add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${app_icon_resource_windows})
+	endif()
 
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/main.cpp
@@ -78,7 +98,7 @@ if (BUILD_GUI)
 		src/tcpinterface.cpp
 	)
 
-	target_link_libraries(${PROJECT_NAME}
+    target_link_libraries(${PROJECT_NAME}
 		PRIVATE
 		xdfwriter
 		Qt${QT_VERSION_MAJOR}::Core
@@ -88,14 +108,29 @@ if (BUILD_GUI)
 		Threads::Threads
 		LSL::lsl
 	)
+
+	# macOS bundle settings
+	if(APPLE)
+		set_target_properties(${PROJECT_NAME} PROPERTIES
+			MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_LIST_DIR}/cmake/MacOSXBundleInfo.plist.in"
+		)
+	endif()
 endif(BUILD_GUI)
 
-
+if(APPLE)
 add_executable(LabRecorderCLI MACOSX_BUNDLE
 	src/clirecorder.cpp
 	src/recording.h
 	src/recording.cpp
 )
+else()
+add_executable(LabRecorderCLI
+	src/clirecorder.cpp
+	src/recording.h
+	src/recording.cpp
+)
+endif()
+
 
 target_link_libraries(LabRecorderCLI
 	PRIVATE
@@ -108,24 +143,38 @@ target_link_libraries(LabRecorderCLI
 # 	return()
 # endif()
 
-if((DEFINED installLSLApp))
-	installLSLApp(xdfwriter)
-	installLSLApp(testxdfwriter)
-	installLSLApp(LabRecorderCLI)
-	if (BUILD_GUI)
-		installLSLApp(${PROJECT_NAME})
-		installLSLAuxFiles(${PROJECT_NAME}
-			${PROJECT_NAME}.cfg
-			LICENSE
-			README.md
-		)
-	else()
-		installLSLAuxFiles(LabRecorderCLI
-			${PROJECT_NAME}.cfg
-			LICENSE
-			README.md
-		)
-	endif(BUILD_GUI)
+include(GNUInstallDirs)
+
+# Minimal install rules to provide an INSTALL target for multi-config generators
+install(TARGETS xdfwriter
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
+
+install(TARGETS LabRecorderCLI
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+if (BUILD_GUI)
+    install(TARGETS ${PROJECT_NAME}
+        BUNDLE DESTINATION ${CMAKE_INSTALL_BINDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    )
+
+    install(FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.cfg
+        LICENSE
+        README.md
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}
+    )
+else()
+    install(FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.cfg
+        LICENSE
+        README.md
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/LabRecorderCLI
+    )
 endif()
 
 
@@ -229,3 +278,10 @@ if(APPLE AND NOT DEFINED ENV{GITHUB_ACTIONS})
         )
     endif()
 endif(APPLE AND NOT DEFINED ENV{GITHUB_ACTIONS})
+
+# Linux desktop integration (GUI)
+if(UNIX AND NOT APPLE AND BUILD_GUI)
+	# Install a desktop entry and icon for desktop environments
+	install(FILES res/labrecorder.desktop DESTINATION share/applications)
+	install(FILES res/icon.png DESTINATION share/icons/hicolor/256x256/apps RENAME labrecorder.png)
+endif()
