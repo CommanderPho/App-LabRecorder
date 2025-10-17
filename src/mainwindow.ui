@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Lab Recorder</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../res/app.ico</normaloff>../res/app.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_master">
     <item row="0" column="0">
