@@ -1,7 +1,8 @@
 param(
     [Parameter(Mandatory=$true)] [string]$AppExe,
     [Parameter(Mandatory=$true)] [string]$OutDir,
-    [Parameter(Mandatory=$true)] [string]$OutputExe
+    [Parameter(Mandatory=$true)] [string]$OutputExe,
+    [Parameter(Mandatory=$false)] [string]$SevenZipDir
 )
 
 Set-StrictMode -Version Latest
@@ -12,17 +13,33 @@ $ErrorActionPreference = 'Stop'
 # - 7z SFX module (7z.sfx). If not found in PATH, set $SfxPath below
 
 function Resolve-7z {
-    $candidates = @('7z.exe','"C:\\Program Files\\7-Zip\\7z.exe"','"C:\\Program Files (x86)\\7-Zip\\7z.exe"')
-    foreach($c in $candidates){
-        try { $ver = & $ExecutionContext.InvokeCommand.ExpandString($c) -b | Out-Null; return $ExecutionContext.InvokeCommand.ExpandString($c) } catch {}
+    $candidates = @()
+    if([string]::IsNullOrWhiteSpace($SevenZipDir) -eq $false){
+        $candidates += (Join-Path $SevenZipDir '7z.exe')
     }
-    throw '7z.exe not found. Please install 7-Zip and ensure it is in PATH.'
+    $candidates += @(
+        '7z.exe',
+        'C:\\Program Files\\7-Zip\\7z.exe',
+        'C:\\Program Files (x86)\\7-Zip\\7z.exe'
+    )
+    foreach($c in $candidates){ if(Test-Path $c){ return $c } }
+    $cmd = Get-Command '7z.exe' -ErrorAction SilentlyContinue
+    if($cmd){ return $cmd.Path }
+    throw '7z.exe not found. Install 7-Zip or provide -SevenZipDir.'
 }
 
 function Resolve-Sfx {
-    $candidates = @('7z.sfx','"C:\\Program Files\\7-Zip\\7z.sfx"','"C:\\Program Files (x86)\\7-Zip\\7z.sfx"')
-    foreach($c in $candidates){ if(Test-Path $ExecutionContext.InvokeCommand.ExpandString($c)){ return $ExecutionContext.InvokeCommand.ExpandString($c) } }
-    throw '7z.sfx not found. Please locate 7z.sfx and add it to PATH.'
+    $candidates = @()
+    if([string]::IsNullOrWhiteSpace($SevenZipDir) -eq $false){
+        $candidates += (Join-Path $SevenZipDir '7z.sfx')
+    }
+    $candidates += @(
+        '7z.sfx',
+        'C:\\Program Files\\7-Zip\\7z.sfx',
+        'C:\\Program Files (x86)\\7-Zip\\7z.sfx'
+    )
+    foreach($c in $candidates){ if(Test-Path $c){ return $c } }
+    throw '7z.sfx not found. Provide -SevenZipDir or ensure it is in PATH.'
 }
 
 $AppExe = Resolve-Path $AppExe | Select-Object -ExpandProperty Path
