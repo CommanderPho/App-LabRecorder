@@ -30,6 +30,21 @@
             }
         },
         {
+            "name": "win-vs-release-single",
+            "displayName": "Windows VS2022 Release (single-file exe)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": { "value": "x64" },
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_BUILD_TYPE": "Release",
+                "LSL_INSTALL_ROOT": "C:/Users/pho/repos/EmotivEpoc/LSL_REPOS/LSL/liblsl/out/install/x64-Debug",
+                "QT_DIR": "L:/Qt/5.15.2/msvc2019_64/lib/cmake/Qt5",
+                "Qt5_DIR": "L:/Qt/5.15.2/msvc2019_64/lib/cmake/Qt5",
+                "LABRECORDER_SINGLE_FILE_EXE": true
+            }
+        },
+        {
             "name": "linux-gcc-release",
             "displayName": "Linux GCC Release",
             "generator": "Unix Makefiles",
@@ -68,6 +83,7 @@
     "buildPresets": [
         { "name": "win-debug", "configurePreset": "win-vs-debug", "configuration": "Debug" },
         { "name": "win-release", "configurePreset": "win-vs-release", "configuration": "Release" },
+        { "name": "win-release-single", "configurePreset": "win-vs-release-single", "configuration": "Release" },
         { "name": "linux-release", "configurePreset": "linux-gcc-release" },
         { "name": "macos-release", "configurePreset": "macos-release", "configuration": "Release" }
     ],

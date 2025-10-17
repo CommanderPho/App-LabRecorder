@@ -36,6 +36,12 @@ cmake --build build -j --config Release --target install
 cmake --preset win-vs-release
 cmake --build --preset win-release --target INSTALL
 
+# Windows (Optional) - Single-file EXE for GUI
+# Requires 7-Zip installed (7z.exe and 7z.sfx in PATH)
+cmake --preset win-vs-release-single
+cmake --build --preset win-release-single --target package-single-file-exe
+# Result: out/build/win-vs-release-single/ (or target dir) contains LabRecorder-single.exe
+
 # Linux (GCC, Unix Makefiles)
 cmake --preset linux-gcc-release
 cmake --build --preset linux-release --target install
@@ -49,6 +55,7 @@ open 'out/build/macos-release/LabRecorder.xcodeproj' ## open in XCode
 # Notes
 # - Ensure Qt and liblsl are discoverable (set Qt6_DIR/Qt5_DIR and LSL_INSTALL_ROOT as needed)
 # - On Windows, the GUI build runs windeployqt automatically post-build; on macOS, use macdeployqt via install rules; on Linux, install rules provide a .desktop file and icon
+# - For single-file EXE, antivirus tools may flag self-extractors; consider code signing and publishing checksums
 ```
 
 

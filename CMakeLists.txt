@@ -14,6 +14,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED On)
 
 option(BUILD_GUI "Build the GUI, set to off for CLI only build" ON)
+option(LABRECORDER_SINGLE_FILE_EXE "Enable Windows single-file EXE packaging (optional)" OFF)
 
 set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "NO")
 set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "")
@@ -189,6 +190,20 @@ if (WIN32)
 			$<TARGET_FILE:LSL::lsl>
 			$<TARGET_FILE:xdfwriter>
 			$<TARGET_FILE_DIR:${PROJECT_NAME}>)
+
+		# Optional: package GUI into a single-file EXE using a PowerShell script and 7-Zip SFX
+		if(LABRECORDER_SINGLE_FILE_EXE)
+			set(LABRECORDER_PACK_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR}/scripts/windows/make-single-file-exe.ps1")
+			add_custom_target(package-single-file-exe ALL
+				DEPENDS ${PROJECT_NAME}
+				COMMAND powershell -NoProfile -ExecutionPolicy Bypass -File
+					"${LABRECORDER_PACK_SCRIPT}"
+					-AppExe "$<TARGET_FILE:${PROJECT_NAME}>"
+					-OutDir "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+					-OutputExe "$<TARGET_FILE_DIR:${PROJECT_NAME}>/LabRecorder-single.exe"
+				WORKING_DIRECTORY $<TARGET_FILE_DIR:${PROJECT_NAME}>
+			)
+		endif()
 	else()
 		add_custom_command(TARGET LabRecorderCLI POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E copy_if_different
@@ -204,11 +219,31 @@ if (BUILD_GUI)
 		COMMAND ${CMAKE_COMMAND} -E copy
 		${CMAKE_CURRENT_SOURCE_DIR}//${PROJECT_NAME}.cfg
 		$<TARGET_FILE_DIR:${PROJECT_NAME}>)
+	add_custom_command(
+		TARGET ${PROJECT_NAME} POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy
+		${CMAKE_CURRENT_SOURCE_DIR}//LICENSE
+		$<TARGET_FILE_DIR:${PROJECT_NAME}>)
+	add_custom_command(
+		TARGET ${PROJECT_NAME} POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy
+		${CMAKE_CURRENT_SOURCE_DIR}//README.md
+		$<TARGET_FILE_DIR:${PROJECT_NAME}>)
 else()
 	add_custom_command(
 		TARGET LabRecorderCLI POST_BUILD
 		COMMAND ${CMAKE_COMMAND} -E copy
 		${CMAKE_CURRENT_SOURCE_DIR}//${PROJECT_NAME}.cfg
+		$<TARGET_FILE_DIR:LabRecorderCLI>)
+	add_custom_command(
+		TARGET LabRecorderCLI POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy
+		${CMAKE_CURRENT_SOURCE_DIR}//LICENSE
+		$<TARGET_FILE_DIR:LabRecorderCLI>)
+	add_custom_command(
+		TARGET LabRecorderCLI POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy
+		${CMAKE_CURRENT_SOURCE_DIR}//README.md
 		$<TARGET_FILE_DIR:LabRecorderCLI>)
 endif(BUILD_GUI)
 
