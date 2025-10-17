@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QStandardPaths>
+#include <QHostInfo>
 #if QT_VERSION_MAJOR < 6
 #include <QRegExp>
 #else
@@ -604,6 +605,23 @@ QString MainWindow::replaceFilename(QString fullfile) const {
 	fullfile.replace("%datetime", nowUtc.toString("yyyy-MM-ddTHHmmss.zzzZ"));
 	fullfile.replace("%date", nowUtc.toString("yyyy-MM-dd"));
 	fullfile.replace("%time", nowUtc.toString("HHmmss.zzzZ"));
+
+	// Hostname replacement (filename-safe)
+	QString hostname = QHostInfo::localHostName();
+	if (hostname.isEmpty()) hostname = QStringLiteral("unknown-host");
+	QString safeHostname = hostname;
+#if QT_VERSION_MAJOR < 6
+	// Replace whitespace with underscore
+	safeHostname.replace(QRegExp("\\s+"), "_");
+	// Replace characters not safe in filenames on major platforms
+	safeHostname.replace(QRegExp("[<>:\\"/\\\\\\|\\?\\*]"), "_");
+#else
+	// Replace whitespace with underscore
+	safeHostname.replace(QRegularExpression("\\s+"), "_");
+	// Replace characters not safe in filenames on major platforms
+	safeHostname.replace(QRegularExpression("[<>:\\"/\\\\\\|\\?\\*]"), "_");
+#endif
+	fullfile.replace("%hostname", safeHostname);
 
 	return fullfile.trimmed();
 }
