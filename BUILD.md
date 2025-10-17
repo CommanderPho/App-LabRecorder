@@ -43,6 +43,8 @@ cmake --build --preset linux-release --target install
 # macOS (Xcode)
 cmake --preset macos-release
 cmake --build --preset macos-release --target install
+open 'out/build/macos-release/LabRecorder.xcodeproj' ## open in XCode
+
 
 # Notes
 # - Ensure Qt and liblsl are discoverable (set Qt6_DIR/Qt5_DIR and LSL_INSTALL_ROOT as needed)
@@ -76,6 +78,12 @@ cmake --build build -j --config Debug
 Commandline options:
 -DLSLAPPS_XDFBrowser:BOOL="0" -DLSL_DIR:PATH="/Users/pho/libs/labstreaminglayer/build/LSL/liblsl" -DQt6_DIR:PATH="/usr/local/lib/cmake/Qt6" -DBoost_INCLUDE_DIR:PATH="/Users/pho/libs/boost_1_84_0" -DMACDEPLOYQT_EXECUTABLE:FILEPATH="/usr/local/bin/macdeployqt" -DCPACK_GENERATOR:STRING="TBZ2" -DCMAKE_BUILD_TYPE:STRING="" 
 
+cmake -S . -B build -G "Unix Makefiles" -DLSL_DIR:PATH="/Users/pho/libs/labstreaminglayer/build/LSL/liblsl" -DLSL_WINVER:STRING="0x0601" -DLSL_BUNDLED_BOOST:BOOL="1" -DBoost_INCLUDE_DIR:PATH="/Users/pho/libs/boost_1_84_0" 
+make
+
+### XCode:
+cmake -S . -B build -G "Xcode" -DLSL_DIR:PATH="/Users/pho/libs/labstreaminglayer/build/LSL/liblsl" -DLSL_WINVER:STRING="0x0601" -DLSL_BUNDLED_BOOST:BOOL="1" -DBoost_INCLUDE_DIR:PATH="/Users/pho/libs/boost_1_84_0" 
+# build in Xcode
 
 Cache file:
 LSLAPPS_XDFBrowser:BOOL=0
@@ -85,6 +93,25 @@ Boost_INCLUDE_DIR:PATH=/Users/pho/libs/boost_1_84_0
 MACDEPLOYQT_EXECUTABLE:FILEPATH=/usr/local/bin/macdeployqt
 CPACK_GENERATOR:STRING=TBZ2
 CMAKE_BUILD_TYPE:STRING=
+
+
+cmake -S . -B build -G "Unix Makefiles" -DLSLAPPS_XDFBrowser:BOOL="0" -DLSL_DIR:PATH="/Users/pho/libs/labstreaminglayer/build/LSL/liblsl" -DQt6_DIR:PATH="/usr/local/lib/cmake/Qt6" -DBoost_INCLUDE_DIR:PATH="/Users/pho/libs/boost_1_84_0" -DMACDEPLOYQT_EXECUTABLE:FILEPATH="/usr/local/bin/macdeployqt" -DCPACK_GENERATOR:STRING="TBZ2" -DCMAKE_BUILD_TYPE:STRING="" -DCMAKE_INSTALL_PREFIX="build/install"
+cd build
+make
+
+cd build
+rm -rf *
+cd ../
+cmake -S . -B build -G "Xcode" -DLSLAPPS_XDFBrowser:BOOL="0" -DLSL_DIR:PATH="/Users/pho/libs/labstreaminglayer/build/LSL/liblsl" -DQt6_DIR:PATH="/usr/local/lib/cmake/Qt6" -DBoost_INCLUDE_DIR:PATH="/Users/pho/libs/boost_1_84_0" -DMACDEPLOYQT_EXECUTABLE:FILEPATH="/usr/local/bin/macdeployqt" -DCPACK_GENERATOR:STRING="TBZ2" -DCMAKE_BUILD_TYPE:STRING="" -DCMAKE_INSTALL_PREFIX="build/install"
+
+cmake -S . -B build -G "Xcode" -DLSL_DIR:PATH="/Users/pho/libs/labstreaminglayer/build/LSL/liblsl" -DQt6_DIR:PATH="/usr/local/lib/cmake/Qt6" -DBoost_INCLUDE_DIR:PATH="/Users/pho/libs/boost_1_84_0" -DMACDEPLOYQT_EXECUTABLE:FILEPATH="/usr/local/bin/macdeployqt" -DCPACK_GENERATOR:STRING="TBZ2" -DCMAKE_BUILD_TYPE:STRING="" -DCMAKE_INSTALL_PREFIX="build/install"-DCMAKE_OSX_SYSROOT:STRING="" -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING="" -DCMAKE_CONFIGURATION_TYPES:STRING="Debug;Release;MinSizeRel;RelWithDebInfo" -DCMAKE_INSTALL_PREFIX:PATH="/usr/local" -DLSL_WINVER:STRING="0x0601" -DLABRECORDER_XDFZ:BOOL="0" -DLSL_BUNDLED_BOOST:BOOL="0" -DCMAKE_OSX_ARCHITECTURES:STRING=""
+
+
+ -DBoost_IOSTREAMS_LIBRARY_RELEASE:STRING="/usr/local/lib/libboost_iostreams.dylib" -DBoost_INCLUDE_DIR:PATH="/usr/local/include" 
+
+
+
+## removed args:  -A x64
 
 ```
 
@@ -107,7 +134,7 @@ TIMEN
 Ended up downloading the latest CMake from the website, and then using the GUI to build an XCode project.
 ```
 -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING="" -DCMAKE_OSX_ARCHITECTURES:STRING="" 
-
+12.4
 
 cmake --build . --config Release --target install
 
