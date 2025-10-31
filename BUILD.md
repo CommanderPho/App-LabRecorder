@@ -14,7 +14,7 @@ You will need to download and install:<BR/>
  * [Qt 5.11.1](https://download.qt.io/archive/qt/5.11/) 
  * [Boost 1.65.1](https://sourceforge.net/projects/boost/files/boost-binaries/1.65.1/boost_1_65_1-msvc-14.1-32.exe/download)
 
-# Buiild liblsl
+# Build liblsl
 ```powershell
 cd ../
 mkdir LSL
