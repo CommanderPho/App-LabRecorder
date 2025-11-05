@@ -123,3 +123,5 @@ jobs:
                 MIME=$(file --mime-type $pkg|cut -d ' ' -f2)
                 curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: $TOKEN" -H "Content-Type: $MIME" --data-binary @$pkg $UPLOAD_URL?name=$NAME
               done
+
+              
