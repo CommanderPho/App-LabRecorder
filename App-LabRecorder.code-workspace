@@ -1,12 +1,12 @@
 {
 	"folders": [
-		{
-			"path": "."
-		},
-		{
-			"path": "../../libs/labstreaminglayer"
-		}
-	],
+        {
+            "path": "."
+        },
+        {
+            "path": "../LSL/liblsl"
+        }
+    ],
 	"settings": {
 
 		"workbench.colorCustomizations": {
