@@ -4,7 +4,13 @@
             "path": "."
         },
         {
-            "path": "../LSL/liblsl"
+            "path": "../../LSL_REPOS/LSL/liblsl"
+        },
+        {
+            "path": "../lab-recorder-python"
+        },
+        {
+            "path": "../PhoLogToLabStreamingLayer"
         }
     ],
 	"settings": {
@@ -30,6 +36,7 @@
                   "statusBar.background": "#c71585", // medium violet red
                   "statusBar.foreground": "#ffffff", // white for contrast
                   "sideBarSectionHeader.border": "#ffb6c1" // light pink border
-		}
+        },
+        "python.languageServer": "None"
 	}
 }
