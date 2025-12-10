@@ -98,6 +98,8 @@ if (BUILD_GUI)
 		src/recording.cpp
 		src/tcpinterface.h
 		src/tcpinterface.cpp
+		src/IconFlasher.h
+		src/IconFlasher.cpp
 	)
 
     target_link_libraries(${PROJECT_NAME}
