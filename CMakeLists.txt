@@ -331,15 +331,13 @@ endif()
 
 
 # CPack configuration
-include(CPack)
-
 if(WIN32)
     set(CPACK_GENERATOR "ZIP;NSIS")
 elseif(APPLE)
     set(CPACK_GENERATOR "DragNDrop")
 elseif(UNIX)
     set(CPACK_GENERATOR "DEB;TGZ")
-	set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Pho Hale")
+	
 endif()
 
 set(CPACK_PACKAGE_NAME "LabRecorder")
@@ -351,3 +349,6 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "LabRecorder")
 set(CPACK_PACKAGE_CONTACT "phohale@gmail.com")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Pho Hale")
+
+# This MUST come after all CPACK_* variables are set
+include(CPack)
