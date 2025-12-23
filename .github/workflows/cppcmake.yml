@@ -105,12 +105,12 @@ jobs:
           cd build
           if [[ "${{ matrix.config.os }}" == "windows-latest" ]]; then
             cpack -C Release -G ZIP
-          elif [[ "${{ matrix.config. os }}" == macos-* ]]; then
+          elif [[ "${{ matrix.config.os }}" == 'macOS-latest' ]]; then
             cpack -C Release -G DragNDrop
           else
             cpack -C Release -G DEB
           fi
-          cd .. 
+          cd ..
           cmake -E remove_directory package/_CPack_Packages
 
     - name: Upload Artifacts

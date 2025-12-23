@@ -315,3 +315,24 @@ if(UNIX AND NOT APPLE AND BUILD_GUI)
 	install(FILES res/labrecorder.desktop DESTINATION share/applications)
 	install(FILES res/icon.png DESTINATION share/icons/hicolor/256x256/apps RENAME labrecorder.png)
 endif()
+
+
+# CPack configuration
+include(CPack)
+
+if(WIN32)
+    set(CPACK_GENERATOR "ZIP;NSIS")
+elseif(APPLE)
+    set(CPACK_GENERATOR "DragNDrop")
+elseif(UNIX)
+    set(CPACK_GENERATOR "DEB;TGZ")
+endif()
+
+set(CPACK_PACKAGE_NAME "LabRecorder")
+set(CPACK_PACKAGE_VENDOR "PhoHale")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "LSL stream recorder")
+set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION}")
+set(CPACK_PACKAGE_CONTACT "Pho Hale")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "LabRecorder")
+
