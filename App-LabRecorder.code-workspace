@@ -37,6 +37,9 @@
                   "statusBar.foreground": "#ffffff", // white for contrast
                   "sideBarSectionHeader.border": "#ffb6c1" // light pink border
         },
-        "python.languageServer": "None"
+        "python.languageServer": "None",
+        "github-actions.workflows.pinned.workflows": [
+            "App-LabRecorder/.github/workflows/cppcmake.yml"
+        ]
 	}
 }
