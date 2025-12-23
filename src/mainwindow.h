@@ -17,6 +17,7 @@ class MainWindow;
 
 class recording;
 class RemoteControlSocket;
+class IconFlasher;
 
 class StreamItem {
 	
@@ -71,6 +72,7 @@ private:
 
 	std::unique_ptr<recording> currentRecording;
 	std::unique_ptr<RemoteControlSocket> rcs;
+	std::unique_ptr<IconFlasher> m_iconFlasher;
 
 	int startTime;
 	std::unique_ptr<QTimer> timer;

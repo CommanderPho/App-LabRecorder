@@ -22,6 +22,7 @@ using QRegExp = QRegularExpression;
 #include "recording.h"
 #include "tcpinterface.h"
 #include "win_console.h"
+#include "IconFlasher.h"
 
 const QStringList bids_modalities_default = QStringList({"eeg", "ieeg", "meg", "beh"});
 
@@ -105,6 +106,9 @@ MainWindow::MainWindow(QWidget *parent, const char *config_file)
 	timer = std::make_unique<QTimer>(this);
 	connect(&*timer, &QTimer::timeout, this, &MainWindow::statusUpdate);
 	timer->start(1000);
+
+	// Initialize icon flasher for recording indicator
+	m_iconFlasher = std::make_unique<IconFlasher>(this);
 
 	QString cfgfilepath = find_config_file(config_file);
 	load_config(cfgfilepath);
@@ -496,6 +500,11 @@ void MainWindow::startRecording() {
 		ui->stopButton->setEnabled(true);
 		ui->startButton->setEnabled(false);
 		startTime = (int)lsl::local_clock();
+		
+		// Start icon flashing animation
+		if (m_iconFlasher) {
+			m_iconFlasher->start();
+		}
 
 	} else if (!hideWarnings) {
 		QMessageBox::information(
@@ -512,6 +521,11 @@ void MainWindow::stopRecording() {
 		ui->startButton->setEnabled(true);
 		ui->stopButton->setEnabled(false);
 		statusBar()->showMessage("Stopped");
+		
+		// Stop icon flashing animation
+		if (m_iconFlasher) {
+			m_iconFlasher->stop();
+		}
 	} else if (!hideWarnings) {
 		QMessageBox::information(
 			this, "Not recording", "There is not ongoing recording", QMessageBox::Ok);
