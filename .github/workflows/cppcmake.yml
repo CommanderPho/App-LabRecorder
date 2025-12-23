@@ -101,9 +101,11 @@ jobs:
 
     - name: package
       run: |
-           export LD_LIBRARY_PATH=$Qt5_DIR/lib:$Qt6_DIR/lib:$LD_LIBRARY_PATH
-           cmake --build build --config Release -j --target package
-           cmake -E remove_directory package/_CPack_Packages
+          export LD_LIBRARY_PATH=$Qt5_DIR/lib:$Qt6_DIR/lib:$LD_LIBRARY_PATH
+          cd build
+          cpack -C Release
+          cd ..
+          cmake -E remove_directory package/_CPack_Packages
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
