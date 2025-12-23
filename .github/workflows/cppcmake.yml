@@ -103,8 +103,14 @@ jobs:
       run: |
           export LD_LIBRARY_PATH=$Qt5_DIR/lib:$Qt6_DIR/lib:$LD_LIBRARY_PATH
           cd build
-          cpack -C Release
-          cd ..
+          if [[ "${{ matrix.config.os }}" == "windows-latest" ]]; then
+            cpack -C Release -G ZIP
+          elif [[ "${{ matrix.config. os }}" == macos-* ]]; then
+            cpack -C Release -G DragNDrop
+          else
+            cpack -C Release -G DEB
+          fi
+          cd .. 
           cmake -E remove_directory package/_CPack_Packages
 
     - name: Upload Artifacts
